@@ -16,14 +16,14 @@ function App() {
     socket.on('connect', () => {
       console.log('Connected to the server');
     });
-
-    socket.on('notifications', (data) => {
-      setNotifications(data);
+  
+    socket.on('initialData', (data) => {
+      setNotifications(data.notifications);
     });
-
+  
     return () => {
       socket.off('connect');
-      socket.off('disconnect');
+      socket.off('initialData');
     };
   }, []);
 
@@ -34,7 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/dispatch-board" element={<DispatchBoard />} />
-          <Route path="/messages" element={<Messages />} />
+          <Route path="/messages" element={<Messages socket={socket} />} />
         </Routes>
       </div>
     </Router>
