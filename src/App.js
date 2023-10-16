@@ -1,24 +1,43 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './Navbar';
+import HomePage from './HomePage';
+import Messages from './Messages';
+import DispatchBoard from './DispatchBoard';
 import './App.css';
 
+import io from 'socket.io-client';
+const socket = io('http://localhost:3001');
+
 function App() {
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to the server');
+    });
+
+    socket.on('notifications', (data) => {
+      setNotifications(data);
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+    };
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar notifications={notifications} socket={socket} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/dispatch-board" element={<DispatchBoard />} />
+          <Route path="/messages" element={<Messages />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
