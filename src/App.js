@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import HomePage from './HomePage';
 import Messages from './Messages';
 import DispatchBoard from './DispatchBoard';
+import Game from './Game';
 import './App.css';
 
 import io from 'socket.io-client';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/dispatch-board" element={<DispatchBoard />} />
           <Route path="/messages" element={<Messages socket={socket} />} />
+          <Route path="/game" element={<Game socket={socket} />} />
         </Routes>
       </div>
     </Router>

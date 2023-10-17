@@ -24,6 +24,7 @@ const Navbar = ({ notifications, socket }) => {
       <Link to="/">Home</Link>
       <Link to="/dispatch-board">Dispatch Board</Link>
       <Link to="/messages">Messages</Link>
+      <Link to="/game">Game</Link>
       <div>
         Notifications <span>{notifications.length}</span>
       </div>
